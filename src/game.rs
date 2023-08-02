@@ -17,10 +17,11 @@ impl Game {
             .dimensions((2, 1))
             .build()
             .unwrap();
-        self.world.insert(region, ' ');
+        self.world.insert(region, 'r');
     }
 
     pub fn draw(&mut self) {
+        self.clear();
         let region = AreaBuilder::default()
             .anchor(Point { x: 0, y: 0 })
             .dimensions((3, 3))
@@ -44,11 +45,9 @@ impl Game {
         let view = &self
             .world
             .query(camera)
-            .map(|x| x.anchor().x)
+            .map(|x| x)
             .collect::<Vec<_>>();
 
-        for x in 0..10 {
-            
-        }
+        println!("{:?}", view);
     }
 }
