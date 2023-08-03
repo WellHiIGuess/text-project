@@ -1,7 +1,7 @@
 use quadtree_rs::{area::AreaBuilder, point::Point, Quadtree, entry::Entry};
 
 pub struct Game {
-    world: Quadtree<u64, char>,
+    pub world: Quadtree<u64, char>,
 }
 
 impl Game {
@@ -14,27 +14,14 @@ impl Game {
     fn add_entry(screen: &mut Vec<Vec<char>>, entry: &Entry<u64, char>) {
         for y in 0..entry.height() {
             for x in 0..entry.width() {
-                screen[(entry.anchor().y() + y) as usize][(entry.anchor().x() + x) as usize] = *entry.value_ref();
+                if entry.anchor().y() + y < screen.len() as u64 && entry.anchor().x() + x < screen.len() as u64 {
+                    screen[(entry.anchor().y() + y) as usize][(entry.anchor().x() + x) as usize] = *entry.value_ref();
+                }
             }
         }
     }
 
     pub fn draw(&mut self) {
-        // self.clear();
-        let region = AreaBuilder::default()
-            .anchor(Point { x: 0, y: 0 })
-            .dimensions((3, 3))
-            .build()
-            .unwrap();
-        self.world.insert(region, 'r');
-
-        let region_2 = AreaBuilder::default()
-            .anchor(Point { x: 1, y: 1 })
-            .dimensions((3, 3))
-            .build()
-            .unwrap();
-        self.world.insert(region_2, 'o');
-
         let camera = AreaBuilder::default()
             .anchor(Point { x: 0, y: 0 })
             .dimensions((10, 10))
